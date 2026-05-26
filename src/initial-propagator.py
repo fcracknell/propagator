@@ -66,3 +66,26 @@ if __name__ == "__main__":
     ax.plot(x_0, y_0, "ro")
     ax.set_aspect("equal")
     plt.show()
+
+    speed_sq = np.sum(np.square(v), axis=1)
+
+    r[:, 0] += pi_2
+    sigma = np.sqrt(np.sum(np.square(r), axis=1))
+    r[:, 0] -= 1.0
+    psi = np.sqrt(np.sum(np.square(r), axis=1))
+    r[:, 0] = r[:, 0] + 1.0 - pi_2
+
+    J = (
+        0.5 * speed_sq
+        - (1 - pi_2) / sigma
+        - pi_2 / psi
+        - 0.5 * ((1 - pi_2) * sigma**2 + pi_2 * psi**2)
+    )
+
+    fig, ax = plt.subplots(figsize=(8, 6), dpi=96)
+    ax.plot(sol.t, J, label="Jacobi Constant")
+    ax.axhline(J[0], color="C1", label="Initial Jacobi Constant")
+    ax.legend(loc="center left")
+    ax.set_xlabel("$\\tau$")
+    ax.set_ylabel("$J$")
+    plt.show()
